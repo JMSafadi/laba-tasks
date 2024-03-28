@@ -1,12 +1,3 @@
-// Task:
-// Your task is to implement arithmetic operations on strings without relying on bigint or arithmetic libraries. You need to create functions that perform arithmetic operations as string functions,
-///considering only positive integers (negative numbers can be avoided, as all numbers will be positive integers).
-// All input and output numbers will be positive integers.
-// For subtraction, ensure that the first parameter is always greater than the second parameter.
-// Division should only result in an integer value.
-
-
-// String.plus(string): This function should take another string as input and return the result of adding the two strings together.
 String.prototype.plus = function(numStr) {
   let result = ''
   let remainder = 0
@@ -33,11 +24,8 @@ String.prototype.plus = function(numStr) {
 }
 
 const logPlus = '451279512745127951271'.plus('643192578461923465973175')
-console.log(logPlus)
 
 
-// String.minus(string): This function should take another string as input and return the result of subtracting the second string from the first string.
-// Note that the first parameter will always be greater than the second parameter.
 String.prototype.minus = function(numStr) {
   if (+this < +numStr) {
     throw new Error(`The string that invokes minus method ${this}, must be greather than the provided by arguments ${numStr}`)
@@ -66,11 +54,8 @@ String.prototype.minus = function(numStr) {
 }
 
 const logMinus = '646594185749815751271'.minus('9712712127951212')
-console.log(logMinus)
 
 
-// String.divide(string): This function should take another string as input and return the result of dividing the first string by the second string. 
-// Division should only result in an integer value.
 String.prototype.divide = function (numStr) {
   if (+numStr === 0) {
       throw new Error('Divisor must be a positive integer')
@@ -103,4 +88,3 @@ String.prototype.divide = function (numStr) {
 }
 
 const logDivision = '6463179127952162'.divide('4175127272')
-console.log(logDivision)
