@@ -23,7 +23,7 @@ String.prototype.plus = function(numStr) {
   return result
 }
 
-const logPlus = '451279512745127951271'.plus('643192578461923465973175')
+const plusResult = '451279512745127951271'.plus('643192578461923465973175')
 
 
 String.prototype.minus = function(numStr) {
@@ -53,7 +53,7 @@ String.prototype.minus = function(numStr) {
   return result
 }
 
-const logMinus = '646594185749815751271'.minus('9712712127951212')
+const minusResult = '646594185749815751271'.minus('9712712127951212')
 
 
 String.prototype.divide = function (numStr) {
@@ -87,4 +87,4 @@ String.prototype.divide = function (numStr) {
   return quotient
 }
 
-const logDivision = '6463179127952162'.divide('4175127272')
+const divideResult = '6463179127952162'.divide('4175127272')
