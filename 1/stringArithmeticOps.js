@@ -129,5 +129,5 @@ String.prototype.multiply = function (numStr) {
   return result
 }
 
-const multiplyrResult = '12345678901234567890'.multiply('98765432109876543210')
-console.log(multiplyrResult)
+const multiplyResult = '12345678901234567890'.multiply('98765432109876543210')
+console.log(multiplyResult)
