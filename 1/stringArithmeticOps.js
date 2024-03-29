@@ -48,6 +48,7 @@ String.prototype.minus = function(numStr) {
       remainder = 0
     }
     result = subtraction.toString() + result
+
     i--
     j--
   }
@@ -116,18 +117,15 @@ String.prototype.multiply = function (numStr) {
     if (remainder > 0) {
       tempResult += remainder
     }
-    
     tempResults.push(tempResult)
   }
 
-  // Invert the temporary results to add them with .plus() previous declared function
-  const tempResultReversed = tempResults.map(cadena => cadena.split('').reverse().join(''))
+  const tempResultReversed = tempResults.map((numStrResult) => numStrResult.split('').reverse().join(''))
 
   let result = '0'
   for (const tempResult of tempResultReversed) {
    result = result.plus(tempResult)
   }
-
   return result
 }
 
