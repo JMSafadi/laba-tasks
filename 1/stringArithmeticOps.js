@@ -23,7 +23,8 @@ String.prototype.plus = function(numStr) {
   return result
 }
 
-const plusResult = '451279512745127951271'.plus('643192578461923465973175')
+const plusResult = '4512795127451279512714242453240'.plus('643192578461923465973175')
+console.log(plusResult)
 
 
 String.prototype.minus = function(numStr) {
@@ -53,7 +54,8 @@ String.prototype.minus = function(numStr) {
   return result
 }
 
-const minusResult = '646594185749815751271'.minus('9712712127951212')
+const minusResult = '64659418574981575127117912712'.minus('9712712127951212617391672')
+console.log(minusResult)
 
 
 String.prototype.divide = function (numStr) {
@@ -82,9 +84,52 @@ String.prototype.divide = function (numStr) {
           quotient += '0'
       }
   }
-
   quotient = quotient.replace(/^0+/, '')
   return quotient
 }
 
-const divideResult = '6463179127952162'.divide('4175127272')
+const divideResult = '646317912795216242452424453434'.divide('417512727227224244')
+console.log(divideResult)
+
+
+String.prototype.multiply = function (numStr) {
+  if (this === '0' || numStr === '0') {
+    throw new Error('Numbers must be positive integers')
+  }
+
+  const multiplying = this.split('').reverse()
+  const multiplier = numStr.split('').reverse()
+
+  const tempResults = []
+
+  for (let i = 0; i < multiplier.length; i++) {
+    let remainder = 0
+    let tempResult = ''
+    tempResult = tempResult + '0'.repeat(i)
+
+    for (let j = 0; j < multiplying.length; j++) {
+      const multiplied = +multiplier[i] * +multiplying[j] + remainder
+      remainder = Math.floor(multiplied / 10)
+      tempResult += multiplied % 10
+    }
+
+    if (remainder > 0) {
+      tempResult += remainder
+    }
+    
+    tempResults.push(tempResult)
+  }
+
+  // Invert the temporary results to add them with .plus() previous declared function
+  const tempResultReversed = tempResults.map(cadena => cadena.split('').reverse().join(''))
+
+  let result = '0'
+  for (const tempResult of tempResultReversed) {
+   result = result.plus(tempResult)
+  }
+
+  return result
+}
+
+const multiplyrResult = '12345678901234567890'.multiply('98765432109876543210')
+console.log(multiplyrResult)
