@@ -35,12 +35,12 @@ const transformData = {
       const parsedA = parseInt(a)
 
       if (!isNaN(parsedA)) {
-        return parseInt(a)
+        return parsedA
       } else {
         throw new Error(`Argument type: ${typeof a} can't be converted to number.`)
       }
     } else {
-      let numA = Number(a)
+      const numA = Number(a)
       if (!isNaN(numA)) {
         return numA
       } else {
@@ -50,7 +50,7 @@ const transformData = {
   },
   coerceToType: function(value, type) {
     if (type === 'number') {
-      let valueNum = Number(value)
+      const valueNum = Number(value)
       if (!isNaN(valueNum)) {
         return Number(value)
       } else {
@@ -72,14 +72,14 @@ console.log(transformData.addValues(50, true)) // 51
 console.log(transformData.addValues([50], [1,2,3])) // [ 50, 1, 2, 3 ]
 console.log(transformData.addValues({name: 'Julian'}, {lastName: 'Safadi'})) // { name: 'Julian', lastName: 'Safadi' }
 
-// console.log(transformData.stringifyValues(150)) // '150'
-// console.log(transformData.stringifyValues({name: 'Julian'}))
+console.log(transformData.stringifyValues(150)) // '150'
+console.log(transformData.stringifyValues({name: 'Julian'})) // {"name":"Julian"}
+console.log(transformData.stringifyValues(true)) // true
+console.log(transformData.stringifyValues([5,2,3])) // [5,2,3]
 
-// console.log(transformData.invertBoolean(true))
+console.log(transformData.invertBoolean(true)) // false
 
-// console.log(transformData.convertToNumber(true))
+console.log(transformData.convertToNumber('55')) // 55
+console.log(transformData.convertToNumber(false)) // 0
 
-// console.log(transformData.convertToNumber(false))
-// console.log(transformData.convertToNumber('500'))
-
-// console.log(transformData.coerceToType(1650, 'string'))
+console.log(transformData.coerceToType('40', 'number')) // 40
