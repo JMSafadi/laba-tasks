@@ -10,7 +10,6 @@ const transformData = {
       throw new Error(`Arguments ${a} and ${b} can't be added.`)
     }
   },
-  // Verificar si la conversion fue a String, sino tirar error
   stringifyValue: function(a) {
     if (typeof a === 'object') {
       return JSON.stringify(a)
@@ -30,7 +29,6 @@ const transformData = {
       return a
     } else if (typeof a === 'string') {
       const parsedA = parseInt(a)
-
       if (!isNaN(parsedA)) {
         return parsedA
       } else {
