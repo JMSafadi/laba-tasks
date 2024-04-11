@@ -1,13 +1,23 @@
 const transformData = {
   addValues: function(a, b) {
-    const numA = Number(a)
-    const numB = Number(b)
-    if (!isNaN(numA) && !isNaN(numB)) {
-      return numA + numB
-    } else if (typeof a === 'string' || typeof b === 'string') {
-      return String(a) + String(b)
+    if (typeof a === 'number' && typeof b === 'number') {
+      return a + b
+    } else if (typeof a === 'string' && typeof b === 'string') {
+      return a + b
+    } else if (typeof a === 'boolean' || typeof b === 'boolean') {
+      const numA = Number(a)
+      const numB = Number(b)
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return a + b
+      }
+    } else if (typeof a === 'bigint' || typeof b === 'bigint') {
+      const numA = Number(a)
+      const numB = Number(b)
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA + numB
+      }
     } else {
-      throw new Error(`Arguments ${a} and ${b} can't be added.`)
+      throw new Error(`Arguments ${a}(${typeof a}) and ${b}(${typeof b}) can't be added.`)
     }
   },
   stringifyValue: function(a) {
@@ -28,7 +38,7 @@ const transformData = {
     if (typeof a === 'number') {
       return a
     } else if (typeof a === 'string') {
-      const parsedA = parseInt(a)
+      const parsedA = parseFloat(a)
       if (!isNaN(parsedA)) {
         return parsedA
       } else {
@@ -57,6 +67,8 @@ const transformData = {
       return Boolean(value)
     } else if (type === 'bigint') {
       return BigInt(value)
+    } else if (type === 'object') {
+      return JSON.parse(value)
     } else {
       throw new Error(`Coercion not possible with value: ${value} and type ${type}.`)
     }
@@ -76,8 +88,9 @@ const transformData = {
   }
 }
 
-console.log(transformData.addValues(100, '100')) //200
-console.log(transformData.addValues('hello', '100')) // hello100
+console.log(transformData.addValues('hello', '10')) // hello10
+console.log(transformData.addValues(100, 100)) // 200
+// console.log(transformData.addValues('hello', 50)) // Error
 console.log(transformData.addValues(50, true)) // 51
 console.log(transformData.addValues(null, true)) // 1
 console.log(transformData.addValues(BigInt(64975915909416567591n), 8181)) // 64975915909416575000
@@ -92,12 +105,14 @@ console.log(transformData.invertBoolean(true)) // false
 
 console.log(transformData.convertToNumber('55')) // 55
 console.log(transformData.convertToNumber(false)) // 0
+console.log(transformData.convertToNumber('123.45')) // 123.45
 console.log(transformData.convertToNumber(34619755905948762130n)) // 34619755905948762000
 // console.log(transformData.convertToNumber({name: 'Julian', lastName: 'Safadi'})) // Error
 
 console.log(transformData.coerceToType(34619755905948762130, 'bigint')) // 34619755905948762112n
 console.log(transformData.coerceToType(0, 'boolean')) // false
 console.log(transformData.coerceToType('150', 'number')) // 150
+console.log(transformData.coerceToType('{"name": "Julian", "age": "26"}', 'object')) // {"name": "Julian", "age": "26"}
 
 console.log(transformData.convertToBigInt(346197546198273461497n)) // 346197546198273461497n
 // console.log(transformData.convertToBigInt(10)) // Error
