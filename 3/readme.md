@@ -1,6 +1,3 @@
-# Function
-## Task:
-
 **Task 1: Immutability and Pure Functions**
 - Implement a pure function called calculateDiscountedPrice that takes an array of products and a discount percentage as arguments. The function should return a new array of products with discounted prices based on the given .
 - Create a pure function called calculateTotalPrice that takes an array of products as an argument. The function should return the total price of all products, without modifying the original array or its items.<br>
