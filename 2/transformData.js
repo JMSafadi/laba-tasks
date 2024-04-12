@@ -5,11 +5,7 @@ const transformData = {
     } else if (typeof a === 'string' && typeof b === 'string') {
       return a + b
     } else if (typeof a === 'boolean' || typeof b === 'boolean') {
-      const numA = Number(a)
-      const numB = Number(b)
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return a + b
-      }
+      return a + b
     } else if (typeof a === 'bigint' || typeof b === 'bigint') {
       const numA = Number(a)
       const numB = Number(b)
