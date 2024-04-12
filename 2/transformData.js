@@ -5,7 +5,7 @@ const transformData = {
     } else if (typeof a === 'string' && typeof b === 'string') {
       return a + b
     } else if (typeof a === 'boolean' || typeof b === 'boolean') {
-      return a + b
+      return a || b
     } else if (typeof a === 'bigint' || typeof b === 'bigint') {
       const numA = Number(a)
       const numB = Number(b)
@@ -87,7 +87,7 @@ const transformData = {
 console.log(transformData.addValues('hello', '10')) // hello10
 console.log(transformData.addValues(100, 100)) // 200
 // console.log(transformData.addValues('hello', 50)) // Error
-console.log(transformData.addValues(50, true)) // 51
+console.log(transformData.addValues(true, false)) // true
 console.log(transformData.addValues(null, true)) // 1
 console.log(transformData.addValues(BigInt(64975915909416567591n), 8181)) // 64975915909416575000
 
