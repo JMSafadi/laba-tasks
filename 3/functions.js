@@ -6,7 +6,7 @@ function calculateDiscountedPrice(array, discount) {
   const productsDiscounted = array.map(prod => prod - (prod * discount / 100))
   return productsDiscounted
 }
-// console.log('Discounted array:', calculateDiscountedPrice(products, 10))
+console.log('Discounted array:', calculateDiscountedPrice(products, 10))
 
 function calculateTotalPrice(arr) {
   const totalProductsPrice = arr.reduce((acc, value) => acc + value)
@@ -16,7 +16,7 @@ function calculateTotalPrice(arr) {
 
 
 // Task 2
-const compose = (...functions) => arg => functions.reduceRight((result, fn) => fn(result), arg)
+const compose = (...functions) => arg => functions.reduceRight((accum, fn) => fn(accum), arg)
 
 // 
 const person1 = {
@@ -63,6 +63,40 @@ console.log(getAverageGrade(students))
 
 
 // Task 3
-function createCounter() {
- 
+const createCounter = function() {
+  let count = 0
+  return () => ++count
 }
+
+const counter1 = createCounter()
+const counter2 = createCounter()
+
+console.log(counter1())
+console.log(counter1())
+console.log(counter1())
+console.log(counter2())
+console.log(counter2())
+console.log(counter2())
+
+function repeatFunction(fn, num) {
+  if (num < 0) {
+    return function() {
+      while (true) {
+        fn()
+      }
+    }
+  } else {
+    return function() {
+      for (i = 0; i < num; i++) {
+        fn()
+      }
+    }
+  }
+}
+
+const sayHello = () => {
+  console.log('Hello')
+}
+
+const repeat = repeatFunction(sayHello, 3)
+console.log(repeat())
