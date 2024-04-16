@@ -118,20 +118,18 @@ function power(base, exp) {
     return base * power(base, exp - 1)
   }
 }
-console.log(power(2, 3))
+console.log(power(2, -3))
 
 // Task 5 
 function lazyMap(arr, mapFn) {
   let index = 0
-  return {
-    next: () => {
-      if (index < arr.length) {
-        const result = mapFn(arr[index])
-        index++
-        return { value: result, done: false }
-      } else {
-        return { done: true }
-      }
+  return () => {
+    if (index < arr.length) {
+      const result = mapFn(arr[index])
+      index++
+      return result
+    } else {
+      throw new Error(`There are no more values to map. Only ${arr.length}`)
     }
   }
 }
@@ -139,9 +137,10 @@ const numbers = [5, 10, 30]
 const mapFn = x => x * 2
 const lazyGenerator = lazyMap(numbers, mapFn)
 
-console.log(lazyGenerator.next().value)
-console.log(lazyGenerator.next().value)
-console.log(lazyGenerator.next().value)
+console.log(lazyGenerator())
+console.log(lazyGenerator())
+console.log(lazyGenerator())
+// console.log(lazyGenerator()) // Error
 
 // 
 function fibonacciGenerator() {
