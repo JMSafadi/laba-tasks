@@ -60,7 +60,7 @@ const students = [{
   grade: 2
 }]
 
-console.log('average', getAverageGrade(students))
+console.log(getAverageGrade(students))
 
 
 // Task 3
