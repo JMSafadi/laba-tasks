@@ -1,14 +1,23 @@
 // Task 1
-const products = [136, 64, 13409, 7]
+const products = [{
+  product: 'Product 1',
+  price: 130
+}, {
+  product: 'Product 2',
+  price: 80
+}, {
+  product: 'Product 3',
+  price: 35
+}]
 
 function calculateDiscountedPrice(array, discount) {
-  const productsDiscounted = array.map(prod => prod - (prod * discount / 100))
+  const productsDiscounted = array.map(prod => prod.price - (prod.price * discount / 100))
   return productsDiscounted
 }
 console.log(calculateDiscountedPrice(products, 10))
 
 function calculateTotalPrice(arr) {
-  const totalProductsPrice = arr.reduce((acc, value) => acc + value, 0)
+  const totalProductsPrice = arr.reduce((acc, value) => acc + value.price, 0)
   return totalProductsPrice
 }
 console.log(calculateTotalPrice(products))
@@ -18,18 +27,34 @@ console.log(calculateTotalPrice(products))
 const compose = (...functions) => arg => functions.reduceRight((accum, fn) => fn(accum), arg)
 
 // 
-const getFullName = person => `${person.firstName} ${person.lastName}`
+const getFullName = person => {
+
+  if (typeof person !== 'object' || Array.isArray(person)) {
+    throw new Error(`Object provided as argument must be an object literal, and not ${typeof person}.`)
+  } else if (typeof person.firstName !== 'string' || typeof person.lastName !== 'string') {
+    throw new Error(`Object provided must have firstName and lastName properties.`)
+  } else {
+    return `${person.firstName} ${person.lastName}`
+  }
+
+}
 
 const person1 = {
   firstName: 'Julian',
   lastName: 'Safadi'
 }
+const person2 = {
+  firstName: 'Julian',
+  age: 20
+}
+
 console.log(getFullName(person1))
+// console.log(getFullName(person2)) // Error
 
 // 
 const filterUnique = (str) => {
   const uniqueWords = []
-  str.split(' ').forEach(word => {
+  str.toLowerCase().split(' ').forEach(word => {
     if (!uniqueWords.includes(word)) {
       uniqueWords.push(word)
     }
@@ -38,7 +63,7 @@ const filterUnique = (str) => {
 }
 const sortWords = (arr) => arr.sort()
 const filterUniqueWords = compose(sortWords, filterUnique)
-console.log(filterUniqueWords('this this is an example for task task 3'))
+console.log(filterUniqueWords('this this is an example FOR TASK task 3'))
 
 // 
 const filterGrades = (arr) => arr.map(student => student.grade)
@@ -62,13 +87,11 @@ const students = [{
 
 console.log(getAverageGrade(students))
 
-
 // Task 3
 const createCounter = function() {
   let count = 0
   return () => ++count
 }
-
 
 const counter1 = createCounter()
 const counter2 = createCounter()
