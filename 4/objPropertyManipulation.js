@@ -9,7 +9,7 @@ const person = {
 Object.keys(person).forEach(key => {
   Object.defineProperty(person, key, { writable: false })
   let descriptor = Object.getOwnPropertyDescriptor(person, key)
-  // console.log(descriptor.writable)
+  console.log(descriptor.writable)
 })
 
 person.updateInfo = function(newObj) {
@@ -35,9 +35,9 @@ Object.defineProperty(person, 'address', {
   enumerable: false,
   configurable: false
 })
-// console.dir(person)
+console.dir(person)
 person.updateInfo(newPersonInfo)
-// console.dir(person)
+console.dir(person)
 
 // 2
 const product = {
@@ -56,19 +56,19 @@ Object.defineProperties(product, {
     enumerable: false,
   }
 })
-// console.log(product)
+console.log(product)
 
 function getTotalPrice(obj) {
   const productPrice = Object.getOwnPropertyDescriptor(obj, 'price').value
   const productQty = Object.getOwnPropertyDescriptor(obj, 'quantity').value
   return productPrice * productQty
 }
-// console.log(getTotalPrice(product))
+console.log(getTotalPrice(product))
 
 function deleteNonConfigurable(obj, prop) {
   Object.getOwnPropertyNames(obj).forEach(key => {
     const descriptor = Object.getOwnPropertyDescriptor(obj, key)
-    // console.log(descriptor)
+    console.log(descriptor)
     if (key === prop) {
       if (descriptor.configurable === false) {
         throw new Error(`This property can't be modified or deleted. It's setted as non-configurable.`)
@@ -80,9 +80,9 @@ function deleteNonConfigurable(obj, prop) {
   })
 
 }
-// console.log(Object.getOwnPropertyNames(product)) //  'name', 'price', 'quantity' ]
-// console.log(deleteNonConfigurable(product, 'quantity'))
-// console.log(Object.getOwnPropertyNames(product)) // [ 'name', 'price' ]
+console.log(Object.getOwnPropertyNames(product)) //  'name', 'price', 'quantity' ]
+console.log(deleteNonConfigurable(product, 'quantity'))
+console.log(Object.getOwnPropertyNames(product)) // [ 'name', 'price' ]
 
 // 3
 const bankAccount1 = {
@@ -102,9 +102,9 @@ const bankAccount1 = {
   }
 }
 
-// console.log(bankAccount1.formattedBalance)
+console.log(bankAccount1.formattedBalance)
 bankAccount1.updateBalance = 1000
-// console.log(bankAccount1.formattedBalance)
+console.log(bankAccount1.formattedBalance)
 
 const bankAccount2 = { 
   _balance: 400,
@@ -124,12 +124,12 @@ const bankAccount2 = {
 }
 
 bankAccount1.transfer(bankAccount2, 200)
-// console.log('Account 1', bankAccount1.formattedBalance)
-// console.log('Account 2', bankAccount2.formattedBalance)
+console.log('Account 1', bankAccount1.formattedBalance)
+console.log('Account 2', bankAccount2.formattedBalance)
 
 bankAccount2.transfer(bankAccount1, 50)
-// console.log('Account 1', bankAccount1.formattedBalance)
-// console.log('Account 2', bankAccount2.formattedBalance)
+console.log('Account 1', bankAccount1.formattedBalance)
+console.log('Account 2', bankAccount2.formattedBalance)
 
 
 // 4
@@ -137,7 +137,6 @@ function createImmutableObject(obj) {
   const immutableObj = {}
   Object.getOwnPropertyNames(obj).forEach(key => {
     let descriptor = Object.getOwnPropertyDescriptor(obj, key)
-
     if (descriptor) {
       Object.defineProperty(immutableObj, key, {
         value: obj[key],
@@ -153,12 +152,11 @@ function createImmutableObject(obj) {
   return immutableObj
 }
 const immutableVersionObj = createImmutableObject(person)
-// console.log(Object.getOwnPropertyNames(immutableVersionObj))
+console.log(Object.getOwnPropertyNames(immutableVersionObj))
 
 
 // 5
 function observeObject(obj, cb) {
-
   const handler = {
     get: function(target, prop) {
       if (!Object.getOwnPropertyDescriptor(target, prop).enumerable) {
@@ -188,7 +186,90 @@ function observeObject(obj, cb) {
 const proxy = observeObject(person, (str) => console.log(str))
 console.log(person.firstName)
 
-proxy.firstName = 'Matias'
+// proxy.firstName = 'Matias'
 console.log(person.firstName)
 
 // 6
+function deepCloneObject(obj, clonedObjects = new WeakMap()) {
+  const clone = Array.isArray(obj) ? [] : {}
+  if (typeof obj !== 'object') {
+    return obj
+  }
+  if (clonedObjects.has(obj)) {
+    return clonedObjects.get(obj)
+  }
+  clonedObjects.set(obj, clone)
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clone[key] = deepCloneObject(obj[key], clonedObjects)
+    }
+  }
+  return clone
+}
+
+const user = {
+  name: 'Juan',
+  email: 'juan@example.com',
+  address: {
+    street: 'Av. Street',
+    number: 1000
+  },
+  intArr: [10, 20, 100],
+}
+
+user.self = user //  Circular reference
+const userClone = deepCloneObject(user)
+console.log(userClone)
+
+// 7
+function validateObject(obj, schema) {
+  for (let key in schema) {
+    const schemaProp = schema[key]
+    const objProp = obj[key]
+    if (schemaProp.required && !obj.hasOwnProperty(key)) {
+      return false
+    }
+
+    if (obj.hasOwnProperty(key)) {
+      if (schemaProp && typeof objProp !== schemaProp.type) {
+        return false
+      }
+      
+      if (schemaProp.type === 'object' && schemaProp.properties) {
+        if (!validateObject(objProp, schemaProp)) {
+          return false
+        }
+      }
+    }
+  }
+  return true
+}
+
+const newUser = {
+  name: 'Julian',
+  lastName: 'Safadi',
+  age: 26,
+  address: {
+    street: 'Av. Libertador',
+    number: 1000,
+    city: 'Buenos Aires'
+  },
+  isPremium: true
+}
+
+const ObjSchema = {
+  name: { type: 'string', required: true },
+  lastName: { type: 'string', required: true },
+  age: { type: 'number', required: true },
+  address: { 
+    type: 'object',
+    properties: {
+      street: { type: 'string' },
+      number: { type: 'number' },
+      city: { type: 'string' },
+    },
+    required: false
+  },
+  isPremium: { type: 'boolean', required: true }
+}
+console.log(validateObject(newUser, ObjSchema))
