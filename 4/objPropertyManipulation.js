@@ -186,7 +186,7 @@ function observeObject(obj, cb) {
 const proxy = observeObject(person, (str) => console.log(str))
 console.log(person.firstName)
 
-// proxy.firstName = 'Matias'
+proxy.firstName = 'Matias'
 console.log(person.firstName)
 
 // 6
@@ -268,7 +268,7 @@ const ObjSchema = {
       number: { type: 'number' },
       city: { type: 'string' },
     },
-    required: false
+    required: true
   },
   isPremium: { type: 'boolean', required: true }
 }
