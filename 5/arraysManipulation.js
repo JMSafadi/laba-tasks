@@ -56,7 +56,7 @@ const filter = (arr, prop) => {
   })
 }
 const filteredArrayUniques = customFilterUnique(users, arr => filter(arr, 'id'))
-// console.table(filteredArrayUniques)
+console.table(filteredArrayUniques)
 
 // 2
 function chunkArray(arr, chunkSize) {
@@ -70,7 +70,7 @@ function chunkArray(arr, chunkSize) {
   }
   return chunkedArr
 }
-// console.log(chunkArray(users, 2))
+console.log(chunkArray(users, 2))
 
 // 3
 const nums = [210, 560, 12, 84, 6, 2120, 321]
@@ -82,10 +82,9 @@ function customShuffle(arr) {
   }
   return shuffledArray
 }
-// console.table(customShuffle(nums))
+console.table(customShuffle(nums))
 
 // 4
-
 const nums1 = [6, 65, 31, 20, 15]
 const nums2 = [3, 65, 40, 11, 15]
 
