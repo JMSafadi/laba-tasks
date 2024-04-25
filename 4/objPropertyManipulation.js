@@ -86,18 +86,18 @@ console.log(Object.getOwnPropertyNames(product)) // [ 'name', 'price' ]
 
 // 3
 const bankAccount1 = {
-  _balance: 500,
+  _balance: 400,
   get formattedBalance() {
     return `$${this._balance}`
   },
   set updateBalance(newBalance) {
     this._balance = newBalance 
   },
-  transfer(targetAcc, amount) {
+  transfer(currentAcc, targetAcc, amount) {
     if (amount > this._balance ) {
       throw new Error(`Insufficient funds.`)
     }
-    this._balance -= amount
+    currentAcc._balance -= amount
     targetAcc._balance += amount
   }
 }
@@ -114,20 +114,13 @@ const bankAccount2 = {
   set updateBalance(newBalance) {
     this._balance = newBalance 
   },
-  transfer(targetAcc, amount) {
-    if (amount > this._balance ) {
-      throw new Error(`Insufficient funds.`)
-    }
-    this._balance -= amount
-    targetAcc._balance += amount
-  }
 }
 
-bankAccount1.transfer(bankAccount2, 200)
+bankAccount1.transfer(bankAccount1, bankAccount2, 200)
 console.log('Account 1', bankAccount1.formattedBalance)
 console.log('Account 2', bankAccount2.formattedBalance)
 
-bankAccount2.transfer(bankAccount1, 50)
+bankAccount1.transfer(bankAccount2, bankAccount1, 50)
 console.log('Account 1', bankAccount1.formattedBalance)
 console.log('Account 2', bankAccount2.formattedBalance)
 
