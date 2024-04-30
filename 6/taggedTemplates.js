@@ -22,8 +22,8 @@ function localize(strings, ...keywords) {
   })
   return result
 }
-// console.log(localize`${greeting}`) // Bonjour
-// console.log(localize`${introduction}`) // Bienvenue sur notre site web
+console.log(localize`${greeting}`) // Bonjour
+console.log(localize`${introduction}`) // Bienvenue sur notre site web
 
 // 2
 const keywords = ["JavaScript", "template", "tagged"]
@@ -43,7 +43,7 @@ function highlightKeywords(template, keywords) {
   return templateArr.join(' ')
 }
 
-// console.log(highlightKeywords(template, keywords)) // Learn <span class='highlight'>JavaScript</span> tagged templates to create custom <span class='highlight'>template</span> literals for <span class='highlight'>tagged</span> manipulation.
+console.log(highlightKeywords(template, keywords)) // Learn <span class='highlight'>JavaScript</span> tagged templates to create custom <span class='highlight'>template</span> literals for <span class='highlight'>tagged</span> manipulation.
 
 
 // 3
@@ -63,11 +63,11 @@ function add(a, b) {
   return a + ${1+2}
 }
 `
-// console.log(code)
+console.log(code)
 
 // 4
 function debouncedSearch(query) {
-  // console.log('Seaching for: ', query)
+  console.log('Seaching for: ', query)
 }
 
 const debouncedSeachHandler = debounce(debouncedSearch, 3000)
@@ -104,7 +104,7 @@ function throttle(fn, interval) {
 }
 
 function onScroll(event) {
-  // console.log('Scroll event:', event)
+  console.log('Scroll event:', event)
 }
 const throttledScrollHandler = throttle(onScroll, 1000)
 // window.addEventListener('scroll', throttledScrollHandler)
