@@ -47,7 +47,6 @@ console.log(highlightKeywords(template, keywords)) // Learn <span class='highlig
 
 
 // 3
-
 function multiline(strings, ...keywords) {
   let reducedStr = strings.reduce((acc, str, i) => acc + str + (keywords[i] || ''), '')
   let arrayStr = reducedStr.split('\n')
@@ -60,7 +59,7 @@ function multiline(strings, ...keywords) {
 }
 const code = multiline`
 function add(a, b) {
-  return a + ${1+2}
+  return a + b
 }
 `
 console.log(code)
@@ -82,17 +81,15 @@ function debounce(fn, delay) {
   }
 }
 
-// const inputElement = document.getElementById('search-input')
+const inputElement = document.getElementById('search-input')
 
-// inputElement.addEventListener('input', event => {
-//   debouncedSeachHandler(event.target.value)
-// })
+inputElement.addEventListener('input', event => {
+  debouncedSeachHandler(event.target.value)
+})
 
 // 5
 function throttle(fn, interval) {
-
   let lastExecTime = 0
-
   return function(...args) {
     const now = performance.now()
     if (now - lastExecTime >= interval) {
@@ -107,7 +104,7 @@ function onScroll(event) {
   console.log('Scroll event:', event)
 }
 const throttledScrollHandler = throttle(onScroll, 1000)
-// window.addEventListener('scroll', throttledScrollHandler)
+window.addEventListener('scroll', throttledScrollHandler)
 
 
 // 6
@@ -127,7 +124,6 @@ function curry(fn, arity) {
 }
 
 const curriedMultiply = curry(multiply, 3)
-
 const step1 = curriedMultiply(2)
 const step2 = step1(3)
 const result = step2(4)
