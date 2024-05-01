@@ -97,7 +97,6 @@ function throttle(fn, interval) {
       lastExecTime = now
     }
   }
-
 }
 
 function onScroll(event) {
@@ -111,21 +110,26 @@ window.addEventListener('scroll', throttledScrollHandler)
 function multiply(a, b, c) {
   return a * b * c
 }
+
+const _ = Symbol('_')
+
 function curry(fn, arity) {
   return function curried(...args) {
-    if(args.length >= arity) {
-      return fn(...args)
+    const filteredArgs = args.filter(arg => arg !== _)
+    if(filteredArgs.length >= arity) {
+      return fn(...args.map(arg => arg === _ ? null : arg))
     } else {
       return function(...args2) {
-        return curried(...args.concat(args2))
+        return curried(...args.map(arg => arg === _ ? args2.pop() : arg).concat(args2))
       }
     }
   }
 }
 
 const curriedMultiply = curry(multiply, 3)
-const step1 = curriedMultiply(2)
-const step2 = step1(3)
+
+const step1 = curriedMultiply(2, _, _)
+const step2 = step1(3, _)
 const result = step2(4)
 
 console.log('Result:', result) // Result: 24
