@@ -5,6 +5,7 @@ const promises = [
 ]
 
 function promiseAll(promiseArr) {
+  // 
   const promisesResult = []
   let count = 0
   return new Promise((res, rej) => {
@@ -12,7 +13,7 @@ function promiseAll(promiseArr) {
       promise
       .then(value => {
         promisesResult[index] = value
-        count ++
+        count++
         if (count === promiseArr.length) {
           res(promisesResult)
         }
@@ -41,6 +42,7 @@ const promises1 = [
 ]
 
 function promiseAllSettled(promiseArr) {
+  // 
   return new Promise((res) => {
     const promiseResult = []
     let count = 0
@@ -68,3 +70,36 @@ promiseAllSettled(promises1)
   .then(results => {
     console.log('All promises settled:', results)
   })
+
+
+// 3
+function asyncFunction1() {
+  return Promise.resolve('Result from asyncFunction1')
+}
+
+function asyncFunction2(data) {
+  return Promise.resolve(data + ' - Result from asyncFunction2')
+}
+
+function asyncFunction3(data) {
+  return Promise.resolve(data + ' - Result from asyncFunction3')
+}
+
+const functionsArray = [asyncFunction1, asyncFunction2, asyncFunction3]
+
+function chainPromises(arrFn) {
+  // 
+  return arrFn.reduce((acc, asyncFn) => {
+    return acc.then(data => asyncFn(data))
+  }, Promise.resolve())
+}
+
+chainPromises(functionsArray)
+  .then(result => {
+    console.log('Chained promise result:', result) 
+    // 'Result from asyncFunction1 - Result from asyncFunction2 - Result from asyncFunction3'
+  })
+  .catch(error => {
+    console.error('Chained promise error:', error)
+  })
+
