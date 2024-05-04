@@ -103,3 +103,38 @@ chainPromises(functionsArray)
     console.error('Chained promise error:', error)
   })
 
+  
+// 4
+function callbackStyleFunction(value, callback) {
+  setTimeout(() => {
+    if (value > 0) {
+      callback(null, value * 2)
+    } else {
+      callback('Invalid value', null)
+    }
+  }, 1000)
+}
+
+function promisify(callbackFn) {
+  // 
+  return (value) => {
+    return new Promise((res, rej) => {
+      callbackFn(value, (error, result) => {
+        if (result) {
+          res(result)
+        } 
+        rej(error)
+      })
+    })
+  }
+}
+
+const promisedFunction = promisify(callbackStyleFunction)
+
+promisedFunction(3)
+  .then(result => {
+    console.log('Promised function result: ', result) // 6
+  })
+  .catch(error => {
+    console.error('Promised function error: ', error)
+  })
