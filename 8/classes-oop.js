@@ -2,15 +2,15 @@
 const { v4: uuidv4 } = require('uuid')
 
 // Book class to create each object that will be avaiable in the bookstore.
-// Properties are title, author, isbn, price and avaiability of the book.
+// Properties are title, author, isbn, price and availability of the book.
 // Applying OOP encapsulation doing private properties by convension.
 class Book {
-  constructor(title, author, isbn, price, avaiability) {
+  constructor(title, author, isbn, price, availability) {
     this._title = title;
     this._author = author;
     this._isbn = isbn;
     this._price = price;
-    this._avaiability = avaiability
+    this._availability = availability
   }
 }
 
@@ -77,8 +77,61 @@ const cartUser1 = new Cart(user1)
 cartUser1.addBooks(book5, book3, book6)
 
 const cartUser2 = new Cart(user2)
-cartUser2.addBooks(book1, book8, book2, book5)
+cartUser2.addBooks(book1)
 
-const order1 = new Order(user3, book7, book4)
+const orderUser3 = new Order(user3, book7, book4)
+orderUser3.calculateTotalPrice()
 
-// Demonstration
+
+// Demonstration:
+console.log('User2 adds three books to his cart, now he has four')
+cartUser2.addBooks(book8, book7, book2)
+console.log(cartUser2)
+
+// Now he place an order, the class receives the user and the cart array of books going to be purchase.
+console.log('Order placed')
+const orderUser2 = new Order(user2, ...cartUser2._books)
+console.log(orderUser2)
+
+// Calculate the total price
+console.log('Total price for user 2 cart: ', cartUser2.calculateTotalPrice())
+
+// Order can calculates the total with the same method than Cart
+console.log(orderUser2._total) // $51.84
+
+
+// Create new classes for different types of books using inheritance with extends.
+class FictionBook extends Book {
+  constructor(title, author, isbn, price, availability) {
+    super(title, author, isbn, price, availability)
+    this._type = 'Fiction'
+  }
+}
+
+class NonFictionBook extends Book {
+  constructor(title, author, isbn, price, availability) {
+    super(title, author, isbn, price, availability)
+    this._type = 'Non-Fiction'
+  }
+}
+
+class Autobiographies extends Book {
+  constructor(title, author, isbn, price, availability) {
+    super(title, author, isbn, price, availability)
+    this._type = 'Autobiographies'
+  }
+}
+
+const book9 = new FictionBook('A Calamity of Souls', 'David Baldacci', 6451276421346, 15.00, true)
+const book10 = new NonFictionBook('The Anxious Generation', 'Jonathan Haidt', 4579658120340, 28.50, true)
+const book11 = new Autobiographies('The Anxious Generation', 'Jonathan Haidt', 5781649521060, 17.00, true)
+
+// We use method addBooks from Cart to add more books created with de new classes.
+// This demostrate polymorphism, as the method addBooks() is used to add differentes types of books.
+cartUser1.addBooks(book9, book10)
+cartUser2.addBooks(book11)
+
+console.log(cartUser1)
+console.log(cartUser2)
+
+// Bonus
