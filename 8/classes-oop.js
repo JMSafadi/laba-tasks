@@ -30,6 +30,7 @@ class User {
 // Method addBooks() is going to add any amount of books provided by arguments.
 // Method removeBooks() is going to delete any amount of books provided by arguments of the array books.
 // Method calculateTotalPrice() use reduce to add all the prices and return the total of the books in cart.
+// Method searchBookByTitle recibes titles and loop into the Cart's books. Returns different message depending if they are available or not
 // Applying encapsulation making private properties by convention and creating methods to data managment, instead of modifying them fron other parts of the code, making the code more secure.
 class Cart {
   constructor(user) {
@@ -46,6 +47,33 @@ class Cart {
     const total = this._books.reduce((acc, book) => acc + book._price, 0).toFixed(2)
     return `$${total}`
   }
+  searchBooksByTitle(...title) {
+    const availablesBooks = []
+    const nonAvailablesBooks = []
+
+    title.forEach(title => {
+      const foundBook =  this._books.find(book => book._title.toLowerCase().includes(title.toLowerCase()))
+      if (foundBook) {
+        availablesBooks.push(foundBook._title)
+      } else {
+        nonAvailablesBooks.push(title)
+      }
+    })
+    let message = ''
+    if (availablesBooks.length > 1) {
+      message += `The books '${availablesBooks.join("' , '")}' are availables. `
+    } else if (availablesBooks.length === 1){
+      message += `The book '${availablesBooks.join("' , '")}' is available. `
+    }
+
+    if (nonAvailablesBooks.length === 1) {
+      message += `The book '${nonAvailablesBooks.join("' ,'")}' is not available. `
+    } else if (nonAvailablesBooks.length > 1) {
+      message += `The books '${nonAvailablesBooks.join("' ,'")}' are not availables. `
+    }
+    console.log(message)
+    return message
+  }
 }
 
 // Order class to create each object that will represent a purcharse order from user.
@@ -55,6 +83,11 @@ class Order extends Cart {
     super(user)
     this._books = books;
     this._total = this.calculateTotalPrice()
+  }
+  applyDiscount(discount) {
+    const total = parseFloat(this._total.slice(1))
+    const discountCalc = total * discount / 100
+    this._total = `$${total - discountCalc.toFixed(2)}`
   }
 }
 
@@ -84,7 +117,7 @@ orderUser3.calculateTotalPrice()
 
 
 // Demonstration:
-console.log('User2 adds three books to his cart, now he has four')
+console.log('User2 and User1 adds three books to his cart, now he has four')
 cartUser2.addBooks(book8, book7, book2)
 console.log(cartUser2)
 
@@ -93,11 +126,16 @@ console.log('Order placed')
 const orderUser2 = new Order(user2, ...cartUser2._books)
 console.log(orderUser2)
 
+const orderUser1 = new Order(user1, ...cartUser1._books)
+console.log(orderUser1)
+
 // Calculate the total price
 console.log('Total price for user 2 cart: ', cartUser2.calculateTotalPrice())
+console.log('Total price for user 1 cart: ', orderUser1.calculateTotalPrice())
 
 // Order can calculates the total with the same method than Cart
 console.log(orderUser2._total) // $51.84
+console.log(orderUser1._total) // $83.50
 
 
 // Create new classes for different types of books using inheritance with extends.
@@ -126,12 +164,20 @@ const book9 = new FictionBook('A Calamity of Souls', 'David Baldacci', 645127642
 const book10 = new NonFictionBook('The Anxious Generation', 'Jonathan Haidt', 4579658120340, 28.50, true)
 const book11 = new Autobiographies('The Anxious Generation', 'Jonathan Haidt', 5781649521060, 17.00, true)
 
-// We use method addBooks from Cart to add more books created with de new classes.
+// Use method addBooks from Cart to add more books created with de new types classes.
 // This demostrate polymorphism, as the method addBooks() is used to add differentes types of books.
 cartUser1.addBooks(book9, book10)
 cartUser2.addBooks(book11)
 
-console.log(cartUser1)
-console.log(cartUser2)
 
 // Bonus
+// Searching books. Use same method searchBooksByTitle() in both Cart and Order classes.
+cartUser2.searchBooksByTitle('I Feel Bad About My Neck', 'Priestdaddy', 'Visitation') // The books 'I Feel Bad About My Neck' , 'Priestdaddy' are availables. The book 'Visitation' is not available. 
+orderUser2.searchBooksByTitle('Bad Blood') // The book 'Bad Blood' is available.
+
+// Applying different discounts to different orders
+orderUser2.applyDiscount(10)
+orderUser1.applyDiscount(30)
+
+console.log(orderUser2)
+console.log(orderUser1)
