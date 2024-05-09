@@ -1,7 +1,7 @@
 // Class desing
 const { v4: uuidv4 } = require('uuid')
 
-// Book class to create each object that will be avaiable in the bookstore.
+// Book class to create each object that will be available in the bookstore.
 // Properties are title, author, isbn, price and availability of the book.
 // Applying OOP encapsulation doing private properties by convension.
 class Book {
@@ -30,7 +30,7 @@ class User {
 // Method addBooks() is going to add any amount of books provided by arguments.
 // Method removeBooks() is going to delete any amount of books provided by arguments of the array books.
 // Method calculateTotalPrice() use reduce to add all the prices and return the total of the books in cart.
-// Method searchBookByTitle recibes titles and loop into the Cart's books. Returns different message depending if they are available or not
+// Method searchBookByTitle() recibes titles and loop into the Cart's books. Returns different message depending if they are available or not
 // Applying encapsulation making private properties by convention and creating methods to data managment, instead of modifying them fron other parts of the code, making the code more secure.
 class Cart {
   constructor(user) {
@@ -77,11 +77,12 @@ class Cart {
 }
 
 // Order class to create each object that will represent a purcharse order from user.
-// This class applies inheritance concept using properties like user and calculateTotalPrice() with super() and extends from Cart class. Also, applying polymorphism, because we have a method behaving differently depending on the context.
+// This class applies inheritance concept using properties like user, calculateTotalPrice() and addBooks() with super() extending from Cart class. Also, applying polymorphism, because we have methods behaving differently depending on the context.
+// applyDiscount() is a new method only for class Order that calculates the price discounted.
 class Order extends Cart {
   constructor(user, ...books) {
     super(user)
-    this._books = books;
+    this.addBooks(...books)
     this._total = this.calculateTotalPrice()
   }
   applyDiscount(discount) {
@@ -92,48 +93,53 @@ class Order extends Cart {
 }
 
 // Implementation.
-// Create objects instantiating classes.
-const book1 = new Book('I Feel Bad About My Neck', 'Nora Ephron', 9789877256567, 17.99, true)
-const book2 = new Book('Broken Glass', 'Alain Mabanckou', 6497518234671, 10.50, true)
-const book3 = new Book('A Little Life', 'Hanya Yanagihara', 4629137649124, 25.00, true)
-const book4 = new Book('Chronicles: Volume One', 'Bob Dylan', 6421359784312, 12.50, true)
-const book5 = new Book('Light', 'M John Harrison', 3461275497141, 30.50, true)
-const book6 = new Book('Visitation', 'Jenny Erpenbeck', 9875621546215, 28.00, true)
-const book7 = new Book('Bad Blood', 'Lorna Sage', 7846512345951, 12.00, true)
-const book8 = new Book('Priestdaddy', 'Patricia Lockwood', 1976482719365, 10.99, true)
+// Create users ahd objects instantiating classes.
+const books = [
+  new Book('I Feel Bad About My Neck', 'Nora Ephron', 9789877256567, 17.99, true),
+  new Book('Broken Glass', 'Alain Mabanckou', 6497518234671, 10.50, true),
+  new Book('A Little Life', 'Hanya Yanagihara', 4629137649124, 25.00, true),
+  new Book('Chronicles: Volume One', 'Bob Dylan', 6421359784312, 12.50, true),
+  new Book('Light', 'M John Harrison', 3461275497141, 30.50, true),
+  new Book('Visitation', 'Jenny Erpenbeck', 9875621546215, 28.00, true),
+  new Book('Bad Blood', 'Lorna Sage', 7846512345951, 12.00, true),
+  new Book('Priestdaddy', 'Patricia Lockwood', 1976482719365, 10.99, true),
+  new Book('I Feel Bad About My Neck', 'Nora Ephron', 9789877256567, 17.99, true)
+]
 
-const user1 = new User('Julian Safadi', 'julianmatiassafadi@gmail.com')
-const user2 = new User('Gonzalo Barreiro', 'gonzalobarreiro@gmail.com')
-const user3 = new User('Juan Ortega', 'juanortega@gmail.com')
+const users = [
+  new User('Julian Safadi', 'julianmatiassafadi@gmail.com'),
+  new User('Gonzalo Barreiro', 'gonzalobarreiro@gmail.com'),
+  new User('Juan Ortega', 'juanortega@gmail.com')
+]
 
-const cartUser1 = new Cart(user1)
-cartUser1.addBooks(book5, book3, book6)
+const cartUser0 = new Cart(users[0])
+cartUser0.addBooks(books[2], books[4], books[6])
+console.log(cartUser0)
 
-const cartUser2 = new Cart(user2)
-cartUser2.addBooks(book1)
+const cartUser1 = new Cart(users[1])
+cartUser1.addBooks(books[0])
+console.log(cartUser1)
 
-const orderUser3 = new Order(user3, book7, book4)
-orderUser3.calculateTotalPrice()
+const orderUser1 = new Order(users[1], ...cartUser1._books)
+orderUser1.calculateTotalPrice()
+console.log(orderUser1)
 
 
 // Demonstration:
-console.log('User2 and User1 adds three books to his cart, now he has four')
-cartUser2.addBooks(book8, book7, book2)
-console.log(cartUser2)
+console.log('User1 adds three books to his cart')
+cartUser1.addBooks(books[8], books[7], books[3])
+console.log(cartUser1)
 
-// Now he place an order, the class receives the user and the cart array of books going to be purchase.
+// Now he places an order, the class receives the user and the books going to be purchased.
 console.log('Order placed')
-const orderUser2 = new Order(user2, ...cartUser2._books)
+const orderUser2 = new Order(users[2], books[5], books[8])
 console.log(orderUser2)
 
-const orderUser1 = new Order(user1, ...cartUser1._books)
-console.log(orderUser1)
-
-// Calculate the total price
-console.log('Total price for user 2 cart: ', cartUser2.calculateTotalPrice())
+// Calculate the total price with both classes.
 console.log('Total price for user 1 cart: ', orderUser1.calculateTotalPrice())
+console.log('Total price for user 2 cart: ', cartUser1.calculateTotalPrice())
 
-// Order can calculates the total with the same method than Cart
+// Order can calculates the total with the same method than Cart.
 console.log(orderUser2._total) // $51.84
 console.log(orderUser1._total) // $83.50
 
@@ -160,24 +166,28 @@ class Autobiographies extends Book {
   }
 }
 
-const book9 = new FictionBook('A Calamity of Souls', 'David Baldacci', 6451276421346, 15.00, true)
-const book10 = new NonFictionBook('The Anxious Generation', 'Jonathan Haidt', 4579658120340, 28.50, true)
-const book11 = new Autobiographies('The Anxious Generation', 'Jonathan Haidt', 5781649521060, 17.00, true)
+// Add avaialables books with new classes.
+books.push(
+  new FictionBook('A Calamity of Souls', 'David Baldacci', 6451276421346, 15.00, true),
+  new NonFictionBook('The Anxious Generation', 'Jonathan Haidt', 4579658120340, 28.50, true),
+  new Autobiographies('The Anxious Generation', 'Jonathan Haidt', 5781649521060, 17.00, true)
+)
 
 // Use method addBooks from Cart to add more books created with de new types classes.
-// This demostrate polymorphism, as the method addBooks() is used to add differentes types of books.
-cartUser1.addBooks(book9, book10)
-cartUser2.addBooks(book11)
-
+// This demostrate polymorphism, as the method addBooks() is used to add differentes types of books from subclasses.
+cartUser1.addBooks(books[10], books[11])
+cartUser0.addBooks(books[9])
 
 // Bonus
 // Searching books. Use same method searchBooksByTitle() in both Cart and Order classes.
-cartUser2.searchBooksByTitle('I Feel Bad About My Neck', 'Priestdaddy', 'Visitation') // The books 'I Feel Bad About My Neck' , 'Priestdaddy' are availables. The book 'Visitation' is not available. 
+cartUser1.searchBooksByTitle('I Feel Bad About My Neck', 'Priestdaddy', 'Visitation') // The books 'I Feel Bad About My Neck' , 'Priestdaddy' are availables. The book 'Visitation' is not available. 
 orderUser2.searchBooksByTitle('Bad Blood') // The book 'Bad Blood' is available.
 
-// Applying different discounts to different orders
+// Applying different discounts to different orders.
 orderUser2.applyDiscount(10)
-orderUser1.applyDiscount(30)
+orderUser1.applyDiscount(20)
 
-console.log(orderUser2)
 console.log(orderUser1)
+console.log(orderUser2)
+
+module.exports = { users, books }

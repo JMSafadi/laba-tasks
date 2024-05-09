@@ -1,3 +1,6 @@
+All task data is in a MongoDB
+[![storebook.png](https://i.postimg.cc/G3GHYGJJ/storebook.png)](https://postimg.cc/7bPHrCRf)
+
 # Homework 8
 
 ### Task
