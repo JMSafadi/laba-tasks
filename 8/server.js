@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 require('dotenv').config()
+
 const Book = require('./models/Book')
 const User = require('./models/User')
 const { users, books } = require('./classes-oop')
@@ -9,8 +10,10 @@ const app = express()
 const uri = process.env.MONGODB_URI
 const PORT = 3000
 
+// Express middleware to parse the bodies of incoming JSON.
 app.use(express.json())
 
+// Create get request to see books and users information.
 app.get('/books', async(req, res) => {
   try {
     const books = await Book.find()
@@ -31,6 +34,8 @@ app.get('/users', async(req, res) => {
   }
 })
 
+// Create server and connect with mongoDB database. If there isn't information yet, we insert the arrays books and users.
+// This avoid to insert the same data more than once.
 app.listen(PORT, async () => {
   try {
     await mongoose.connect(uri)
