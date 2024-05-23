@@ -269,8 +269,6 @@ console.log(hashTableLPExample.search('key12')) // false
 console.log('Hash Table - Linear Probing', hashTableLPExample.table)
 
 
-// Remain method to iterate through all key-values pairs in the hash table.
-
 // <-- Analysis -->
 // The custom hash function DJB2 algorithm it's known for its simplicity and relatively good distrbution of hash values. It's time complexity is O(n) where n is the lenght of the key because it iterates over each character of the string key.
 
