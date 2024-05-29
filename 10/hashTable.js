@@ -53,6 +53,9 @@ class HashTableChaining extends HashTable {
       this.table[index] = newNode
     } else {
       let current = this.table[index]
+      if (current) {
+        current.value = value
+      }
       while (current.next) {
         current = current.next
       }
@@ -141,6 +144,7 @@ const hashTableChExample = new HashTableChaining()
 hashTableChExample.set('key1', 50)
 hashTableChExample.set('key2', 11)
 hashTableChExample.set('key3', 34)
+hashTableChExample.set('key3', 38) // Duplicate replacing value.
 hashTableChExample.set('key4', 40)
 hashTableChExample.set('key5', 64)
 hashTableChExample.set('key6', 20)
@@ -158,10 +162,11 @@ hashTableChExample.remove('key8') // Removes chained value
 hashTableChExample.remove('key5')
 
 console.log('Getting', hashTableChExample.get('key3')) // Getting 34
+console.log('Getting', hashTableChExample.get('key3')) // Getting 34
 console.log('Getting', hashTableChExample.get('key4')) // Getting 40
 console.log(hashTableChExample.search('key10')) // true
 
-console.log('Has Table - Chaining', hashTableChExample.table)
+console.log('Hash Table - Chaining', hashTableChExample.table)
 
 
 // Hash table Linear Probing.
@@ -176,6 +181,10 @@ class HashTableLinearProbing extends HashTable {
       this._resize()
     }
     let index = this._hash(key)
+    // If key is duplicated, value is replaced.
+    if (this.table[index]) {
+      this.table[index] = { key, value }
+    }
     while (this.table[index] !== undefined) {
       index = (index + 1) % this.size
     }
@@ -249,6 +258,7 @@ hashTableLPExample.set('key2', 20)
 hashTableLPExample.set('key3', 61)
 hashTableLPExample.set('key4', 50)
 hashTableLPExample.set('key5', 41)
+hashTableLPExample.set('key5', 50) // Duplicate replacing value.
 hashTableLPExample.set('key6', 74)
 hashTableLPExample.set('key7', 20)
 hashTableLPExample.set('key8', 31)
