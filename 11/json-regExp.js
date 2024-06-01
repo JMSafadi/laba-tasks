@@ -289,9 +289,9 @@ console.log('Final object parsed 4:', parsedObject4)
 
 
 // <-- Reflection -->
-// I found very interesting this code to undersand how some built-in functions in Javascript, like .parse(), perform so many tasks for us. It was challenging but important to understand the JSON syntax to avoid errors when we are working with this format.
+// I found very interesting this code to understand how some built-in functions in Javascript, like .parse(), perform so many tasks for us. It was challenging but important to understand the JSON syntax to avoid errors when we are working with this format.
 // Recursion was an important concept to work with nested structures.
-// The debugger was very helful to follow the values and the execution of functions step by step.
+// The debugger was very helpful to follow the values and the execution of functions step by step.
 
 // The most difficult step was to create the regex patterns for all cases and tokenize the JSON into an array. I handle this mainly with the position value and updating it in each execute of regex to mantain start and end of each value correctly. Also helped with the lastIndex property that exec() provides.
 // Try to provide clear and brief comments on the code, as if another dev who didn't write it had to understand it.
